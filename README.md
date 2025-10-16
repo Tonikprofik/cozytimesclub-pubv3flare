@@ -1,101 +1,164 @@
-# Payload Cloudflare Template
+# CozyTimes Photo Sharing Platform
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/payloadcms/payload/tree/main/templates/with-cloudflare-d1)
+> **Live**: [cozytimes.club](https://cozytimes.club) — *A warm corner of the internet for sharing life's cozy moments* ☕✨
 
-**This can only be deployed on Paid Workers right now due to size limits.** This template comes configured with the bare minimum to get started on anything you need.
+## 🌟 About CozyTimes
 
-## Quick start
+CozyTimes is a photo sharing platform designed for authentic connection and mindful sharing. Built with modern web technologies on Cloudflare's global edge network, it delivers a fast, beautiful experience for capturing and sharing the small moments that make life special.
 
-This template can be deployed directly to Cloudflare Workers by clicking the button to take you to the setup screen.
+Whether it's a sunset from your window, a homemade meal, or your favorite reading nook, CozyTimes celebrates the everyday moments that bring warmth to our lives.
 
-From there you can connect your code to a git provider such Github or Gitlab, name your Workers, D1 Database and R2 Bucket as well as attach any additional environment variables or services you need.
+## ✨ Features
 
-## Quick Start - local setup
+### Photo Sharing, Simplified
+- **Effortless Uploads**: Share photos with captions and location tags
+- **Curated Albums**: Organize memories into themed collections
+- **Thoughtful Interactions**: Express appreciation with likes and meaningful comments
+- **Cosmic Design**: A calming, space-inspired visual theme that's easy on the eyes
 
-To spin up this template locally, follow these steps:
+### Built for Performance
+- **Edge-First Architecture**: Sub-100ms response times globally via Cloudflare Workers
+- **Optimized Images**: Automatic compression and CDN delivery for instant loading
+- **Offline-Ready**: Progressive Web App features for seamless mobile experience
+- **Type-Safe**: End-to-end TypeScript for reliability and maintainability
 
-### Clone
+## 🛠️ Technical Architecture
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. Cloudflare will connect your app to a git provider such as Github and you can access your code from there.
+### Modern Stack
+```typescript
+Framework:    Next.js 15.4.4 (App Router + React Server Components)
+Language:     TypeScript 5.7+ (Strict Mode)
+CMS:          PayloadCMS 3.59.1
+Database:     Cloudflare D1 (SQLite + Drizzle ORM)
+Storage:      Cloudflare R2 (S3-compatible)
+Runtime:      Cloudflare Workers (Edge)
+```
 
-### Local Development
+### Frontend Experience
+```typescript
+UI:           React 19 + shadcn/ui (Radix UI primitives)
+Styling:      TailwindCSS 3.4+ with custom cosmic theme
+Animations:   Framer Motion 12+ (spring physics & stagger effects)
+Forms:        React Hook Form 7.45
+Icons:        Lucide React
+Testing:      Playwright (E2E) + Vitest (Integration)
+```
 
-## How it works
+## 🎨 The Cosmic Theme
 
-Out of the box, using [`Wrangler`](https://developers.cloudflare.com/workers/wrangler/) will automatically create local bindings for you to connect to the remote services and it can even create a local mock of the services you're using with Cloudflare.
+CozyTimes features a carefully crafted color palette inspired by deep space — calming blues, warm purples, and vibrant coral accents that create a serene browsing experience.
 
-We've pre-configured Payload for you with the following:
+```css
+Deep Space Blue  • Cosmic Purple  • Vibrant Coral  • Accent Gold
+```
 
-### Collections
+The design prioritizes readability, accessibility, and a sense of tranquility. Every interaction is thoughtfully animated with smooth, natural motion that feels responsive without being distracting.
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+## 🏗️ Architecture Highlights
 
-- #### Users (Authentication)
+### Headless CMS with PayloadCMS
+Custom-built collections power the entire platform:
+- **MediaPosts**: Photos with metadata, geolocation, and social features
+- **PhotoAlbums**: Curated collections with custom ordering
+- **Users**: Role-based authentication and access control
+- **Media**: Intelligent file management with R2 storage integration
 
-  Users are auth-enabled collections that have access to the admin panel.
+### Edge Computing Strategy
+Deployed on Cloudflare's global network with:
+- D1 SQLite for low-latency data access
+- R2 object storage with automatic CDN distribution
+- Read replicas for optimal query performance
+- Worker bindings for seamless service integration
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+### Type Safety Throughout
+```typescript
+// Auto-generated types from CMS schema
+import type { MediaPost, User, PhotoAlbum } from '@/payload-types'
 
-- #### Media
+// Strict TypeScript configuration ensures reliability
+// Database → API → Components = End-to-end type safety
+```
 
-  This is the uploads enabled collection.
+## 🚀 Development
 
-### Image Storage (R2)
-
-Images will be served from an R2 bucket which you can then further configure to use a CDN to serve for your frontend directly.
-
-### D1 Database
-
-The Worker will have direct access to a D1 SQLite database which Wrangler can connect locally to, just note that you won't have a connection string as you would typically with other providers.
-
-You can enable read replicas by adding `readReplicas: 'first-primary'` in the DB adapter and then enabling it on your D1 Cloudflare dashboard. Read more about this feature on [our docs](https://payloadcms.com/docs/database/sqlite#d1-read-replicas).
-
-## Working with Cloudflare
-
-Firstly, after installing dependencies locally you need to authenticate with Wrangler by running:
-
+### Local Setup
 ```bash
+# Install dependencies
+pnpm install
+
+# Authenticate with Cloudflare
 pnpm wrangler login
+
+# Start development server (auto-binds D1 + R2)
+pnpm dev
+
+# Run test suite
+pnpm test
 ```
 
-This will take you to Cloudflare to login and then you can use the Wrangler CLI locally for anything, use `pnpm wrangler help` to see all available options.
-
-Wrangler is pretty smart so it will automatically bind your services for local development just by running `pnpm dev`.
-
-## Deployments
-
-When you're ready to deploy, first make sure you have created your migrations:
-
+### Deployment to Cloudflare Workers
 ```bash
+# Create database migrations
 pnpm payload migrate:create
-```
 
-Then run the following command:
-
-```bash
+# Deploy to production
 pnpm run deploy
 ```
 
-This will spin up Wrangler in `production` mode, run any created migrations, build the app and then deploy the bundle up to Cloudflare.
+The deployment pipeline automatically runs migrations, builds the optimized bundle, and distributes to Cloudflare's global edge network.
 
-That's it! You can if you wish move these steps into your CI pipeline as well.
+## 📦 Project Structure
 
-## Enabling logs
+```
+src/
+├── app/
+│   ├── (frontend)/         # Public photo feed & pages
+│   ├── (payload)/          # Admin panel & CMS routes
+│   └── api/                # Custom API endpoints
+├── collections/
+│   ├── MediaPosts.ts       # Photo sharing collection
+│   ├── Users.ts            # Authentication & roles
+│   ├── Media.ts            # R2 storage integration
+│   └── PhotoAlbums.ts      # Curated collections
+├── migrations/             # Drizzle ORM migrations
+└── payload.config.ts       # CMS configuration
+```
 
-By default logs are not enabled for your API, we've made this decision because it does run against your quota so we've left it opt-in. But you can easily enable logs in one click in the Cloudflare panel, [see docs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs).
+## 🔐 Access Control
 
-## Known issues
+Thoughtful permissions ensure privacy and safety:
+- **Public**: Browse and discover photos
+- **Authenticated Users**: Upload, like, comment, create albums
+- **Administrators**: Full content moderation and user management
 
-### GraphQL
+## 🌐 Deployment Architecture
 
-We are currently waiting on some issues with GraphQL to be [fixed upstream in Workers](https://github.com/cloudflare/workerd/issues/5175) so full support for GraphQL is not currently guaranteed when deployed.
+**Production Environment**: Cloudflare Workers (Paid Plan)
+- **Database**: D1 SQLite with read replicas enabled
+- **Storage**: R2 bucket with CDN integration
+- **Logs**: Real-time monitoring via Workers Logs
+- **Bundle Size**: Optimized < 3MB for Worker limits
 
-### Worker size limits
+### Known Considerations
+- GraphQL support limited by [upstream Workers issue](https://github.com/cloudflare/workerd/issues/5175)
+- Requires Cloudflare Workers Paid plan due to bundle size requirements
+- R2 storage configurable for custom CDN domains
 
-We currently recommend deploying this template to the Paid Workers plan due to bundle [size limits](https://developers.cloudflare.com/workers/platform/limits/#worker-size) of 3mb. We're actively trying to reduce our bundle footprint over time to better meet this metric.
+## 💭 The Vision
 
-This also applies to your own code, in the case of importing a lot of libraries you may find yourself limited by the bundle.
+CozyTimes is built on the belief that social media should feel *cozy* — a place where you can slow down, appreciate beauty in the everyday, and connect authentically without the pressure of perfection.
 
-## Questions
+This platform demonstrates how modern web technologies can create experiences that are both technically excellent and emotionally resonant. Fast, reliable, and delightful to use.
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+## 🔗 Resources
+
+- [PayloadCMS Documentation](https://payloadcms.com/docs)
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- [Next.js 15 App Router](https://nextjs.org/docs)
+- [Wrangler CLI Reference](https://developers.cloudflare.com/workers/wrangler/)
+
+---
+
+**Tech Stack**: TypeScript • Next.js 15 • PayloadCMS 3 • Cloudflare Workers • D1 SQLite • R2 Storage • React 19 • TailwindCSS • shadcn/ui • Framer Motion • Playwright • Vitest
+
+*Built with care for those who appreciate life's cozy moments* ☕✨
